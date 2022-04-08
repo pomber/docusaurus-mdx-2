@@ -1,0 +1,26 @@
+{
+  "name": "docusaurus-theme-mdx-v2",
+  "version": "0.0.3",
+  "description": "Docusaurus Theme for MDX v2",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pomber/docusaurus-mdx-2",
+    "directory": "packages/theme"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@mdx-js/react": "^2.1.0",
+    "docusaurus-mdx-loader-v2": "0.0.3"
+  },
+  "scripts": {
+    "build": "cd .",
+    "dev": "cd ."
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
