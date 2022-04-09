@@ -20,6 +20,7 @@ import toc from "./remark/toc";
 import unwrapMdxCodeBlocks from "./remark/unwrapMdxCodeBlocks";
 import transformImage from "./remark/transformImage";
 import transformLinks from "./remark/transformLinks";
+import codeCompat from "./remark/codeCompat";
 import type { LoaderContext } from "webpack";
 import type { Plugin } from "unified";
 // @ts-ignore
@@ -169,6 +170,7 @@ export default async function mdxLoader(
           siteDir: reqOptions.siteDir,
         },
       ],
+      codeCompat,
       ...optionsRemarkPlugins,
     ],
     rehypePlugins: [
@@ -187,7 +189,15 @@ export default async function mdxLoader(
       typeof import("@mdx-js/mdx")
     >;
     const { compile } = await dynamicImport;
-    // const newCompiler = withDebugger(compile);
+
+    // const { withDebugger } = await (Function(
+    //   'return import("mdx-debugger")'
+    // )() as Promise<any>);
+    // const newCompiler = withDebugger(compile, {
+    //   filter: (file: any) => file.path.includes("intro.md"),
+    //   log: (path: string, url: string) => logger.info(`${path}: ${url}`),
+    // });
+
     const newCompiler = compile;
     result = await newCompiler({ path: filePath, value: content }, {
       format: "mdx",
