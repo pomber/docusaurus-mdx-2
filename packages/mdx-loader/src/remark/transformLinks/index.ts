@@ -17,7 +17,7 @@ import path from "path";
 import url from "url";
 import fs from "fs-extra";
 import escapeHtml from "escape-html";
-import { stringifyContent } from "../utils";
+import { assetRequireAttributeValue, stringifyContent } from "../utils";
 import type { Transformer } from "unified";
 import type { Link, Literal } from "mdast";
 
@@ -36,7 +36,14 @@ type Context = PluginOptions & {
 
 // transform the link node to a jsx link with a require() call
 function toAssetRequireNode(node: Link, assetPath: string, filePath: string) {
-  const jsxNode = node as Literal & Partial<Link>;
+  const jsxNode = node as unknown as {
+    type: string;
+    name: string;
+    attributes: any[];
+    children: any[];
+  };
+  const attributes = [];
+
   let relativeAssetPath = posixPath(
     path.relative(path.dirname(filePath), assetPath)
   );
@@ -47,23 +54,43 @@ function toAssetRequireNode(node: Link, assetPath: string, filePath: string) {
   const hash = parsedUrl.hash ?? "";
   const search = parsedUrl.search ?? "";
 
-  const href = `require('${
+  const requireString = `${
     // A hack to stop Webpack from using its built-in loader to parse JSON
     path.extname(relativeAssetPath) === ".json"
       ? `${relativeAssetPath.replace(".json", ".raw")}!=`
       : ""
-  }${inlineMarkdownLinkFileLoader}${
-    escapePath(relativeAssetPath) + search
-  }').default${hash ? ` + '${hash}'` : ""}`;
+  }${inlineMarkdownLinkFileLoader}${escapePath(relativeAssetPath) + search}`;
+
+  attributes.push({
+    type: "mdxJsxAttribute",
+    name: "href",
+    value: assetRequireAttributeValue(requireString, hash),
+  });
+
+  attributes.push({
+    type: "mdxJsxAttribute",
+    name: "target",
+    value: "_blank",
+  });
+
+  if (node.title) {
+    attributes.push({
+      type: "mdxJsxAttribute",
+      name: "title",
+      value: escapeHtml(node.title),
+    });
+  }
+
   const children = stringifyContent(node);
-  const title = node.title ? ` title="${escapeHtml(node.title)}"` : "";
 
   Object.keys(jsxNode).forEach(
     (key) => delete jsxNode[key as keyof typeof jsxNode]
   );
 
-  (jsxNode as Literal).type = "jsx";
-  jsxNode.value = `<a target="_blank" href={${href}}${title}>${children}</a>`;
+  jsxNode.type = "mdxJsxFlowElement";
+  jsxNode.name = "a";
+  jsxNode.attributes = attributes;
+  jsxNode.children = [{ type: "text", value: children }];
 }
 
 async function ensureAssetFileExist(assetPath: string, sourceFilePath: string) {

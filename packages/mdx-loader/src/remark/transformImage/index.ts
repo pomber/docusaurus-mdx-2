@@ -22,6 +22,7 @@ import { promisify } from "util";
 import type { Transformer } from "unified";
 import type { Image, Literal } from "mdast";
 import logger from "@docusaurus/logger";
+import { assetRequireAttributeValue } from "../utils";
 
 const {
   loaders: { inlineMarkdownImageFileLoader },
@@ -62,7 +63,7 @@ async function toImageRequireNode(
   attributes.push({
     type: "mdxJsxAttribute",
     name: "src",
-    value: srcAttributeValue(requireString, hash),
+    value: assetRequireAttributeValue(requireString, hash),
   });
 
   attributes.push({
@@ -200,57 +201,5 @@ export default function plugin(options: PluginOptions): Transformer {
       );
     });
     await Promise.all(promises);
-  };
-}
-
-function srcAttributeValue(requireString: string, hash: string) {
-  return {
-    type: "mdxJsxAttributeValueExpression",
-    value: `require("${requireString}").default + '${hash}'`,
-    data: {
-      estree: {
-        type: "Program",
-        body: [
-          {
-            type: "ExpressionStatement",
-            expression: {
-              type: "BinaryExpression",
-              left: {
-                type: "MemberExpression",
-                object: {
-                  type: "CallExpression",
-                  callee: {
-                    type: "Identifier",
-                    name: "require",
-                  },
-                  arguments: [
-                    {
-                      type: "Literal",
-                      value: requireString,
-                      raw: `"${requireString}"`,
-                    },
-                  ],
-                  optional: false,
-                },
-                property: {
-                  type: "Identifier",
-                  name: "default",
-                },
-                computed: false,
-                optional: false,
-              },
-              operator: "+",
-              right: {
-                type: "Literal",
-                value: hash,
-                raw: `"${hash}"`,
-              },
-            },
-          },
-        ],
-        sourceType: "module",
-        comments: [],
-      },
-    },
   };
 }
