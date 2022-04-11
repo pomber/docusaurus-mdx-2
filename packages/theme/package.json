@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-theme-mdx-v2",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Docusaurus Theme for MDX v2",
   "main": "index.js",
   "publishConfig": {
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@mdx-js/react": "^2.1.0",
-    "docusaurus-mdx-loader-v2": "0.0.3"
+    "docusaurus-mdx-loader-v2": "0.1.0"
   },
   "scripts": {
     "build": "cd .",
