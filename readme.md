@@ -54,7 +54,7 @@ Use this:
 ```md
 import Admonition from '@theme/Admonition'
 
-<Admonition type="ntoe" title="Your Title">
+<Admonition type="note" title="Your Title">
 
 Some **content** with _markdown_ `syntax`.
 
