@@ -1,6 +1,6 @@
 # Docusaurus Theme MDX v2
 
-This is a Docusaurus theme to add support for MDX v2 [until it is officialy supported](https://github.com/facebook/docusaurus/issues/4029).
+This is a Docusaurus theme to add support for MDX v2 [until it is officially supported](https://github.com/facebook/docusaurus/issues/4029).
 
 ## Installation
 
