@@ -140,3 +140,30 @@ Some **content** with _markdown_ `syntax`. Check [this `api`](#).
 Some **content** with _markdown_ `syntax`. Check [this `api`](#).
 
 :::
+
+# GFM
+
+## Autolink literals
+
+www.example.com, https://example.com, and contact@example.com.
+
+## Footnote
+
+A note[^1]
+
+[^1]: Big note.
+
+## Strikethrough
+
+~one~ or ~~two~~ tildes.
+
+## Table
+
+| aaaaaa | bbbbbbbbb | ccccc | dddd |
+| ------ | :-------- | ----: | :--: |
+| 1      | 2         |     3 |  4   |
+
+## Tasklist
+
+- [ ] to do
+- [x] done

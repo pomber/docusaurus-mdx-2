@@ -25,6 +25,7 @@ import type { LoaderContext } from "webpack";
 import type { Plugin } from "unified";
 // @ts-ignore
 import admonitions from "remark-admonitions";
+import gfm from "remark-gfm";
 import { VFile } from "@mdx-js/mdx/lib/compile";
 
 export type RemarkOrRehypePlugin =
@@ -170,6 +171,7 @@ export default async function mdxLoader(
           siteDir: reqOptions.siteDir,
         },
       ],
+      gfm as any,
       codeCompat,
       ...optionsRemarkPlugins,
     ],

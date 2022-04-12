@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-mdx-loader-v2",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Docusaurus Loader for MDX v2",
   "main": "lib/index.js",
   "types": "src/mdx-loader.d.ts",
@@ -32,6 +32,7 @@
     "mdast-util-to-string": "^2.0.0",
     "remark-admonitions": "^1.2.1",
     "remark-emoji": "^2.1.0",
+    "remark-gfm": "1.0.0",
     "stringify-object": "^3.3.0",
     "tslib": "^2.3.1",
     "unist-util-visit": "^2.0.2",
