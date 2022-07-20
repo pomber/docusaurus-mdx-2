@@ -73,14 +73,13 @@ export default function plugin(options: PluginOptions = {}): Transformer {
   const name = options.name || "toc";
 
   return (root) => {
-    // console.log("toc before", JSON.stringify(root, null, 2));
     const headings: TOCItem[] = [];
 
     visit(root, "heading", (child: Heading, _index, parent) => {
       const value = toString(child);
 
       // depth:1 headings are titles and not included in the TOC
-      if (parent !== root || !value || child.depth < 2) {
+      if (!value || child.depth < 2) {
         return;
       }
 
@@ -96,7 +95,6 @@ export default function plugin(options: PluginOptions = {}): Transformer {
     if (headings && headings.length) {
       children[targetIndex] = createExportNode(name, headings);
     }
-    // console.log("toc after", JSON.stringify(root, null, 2));
   };
 }
 
